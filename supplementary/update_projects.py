@@ -56,15 +56,12 @@ def build_project_card(repo):
 def generate_projects_json(repos):
     """Build the full projects.json structure."""
     if not repos:
-        print("No repos found.")
-        return
+    repos = []
 
     # Build cards for all repos, excluding forks if you want
     cards = []
     for repo in repos:
         # Skip forked repos - only show your own work
-        if repo.get("fork"):
-            continue
         cards.append(build_project_card(repo))
 
     # Sort: featured repos first, then by updated date
