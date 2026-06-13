@@ -1,0 +1,32 @@
+# Runs weather_alert.py every day and sends an email if conditions are bad
+name: Weather Alert Bot
+
+on:
+  schedule:
+    # Every day at 2:30 AM UTC = 8:00 AM IST
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-weather:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run weather alert bot
+        env:
+          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+        run: python supplementary/weather_alert.py
